@@ -53,12 +53,12 @@ type Query {
   collections: [Collection!]!
   node(id: String): Node!
   document(collection: String, relativePath: String): DocumentNode!
-  post(relativePath: String): Post!
-  postConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PostFilter): PostConnection!
+  article(relativePath: String): Article!
+  articleConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ArticleFilter): ArticleConnection!
 }
 
 input DocumentFilter {
-  post: PostFilter
+  article: ArticleFilter
 }
 
 type DocumentConnectionEdges {
@@ -84,9 +84,9 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Folder
+union DocumentNode = Article | Folder
 
-type Post implements Node & Document {
+type Article implements Node & Document {
   title: String!
   body: JSON
   id: ID!
@@ -107,20 +107,20 @@ input RichTextFilter {
   exists: Boolean
 }
 
-input PostFilter {
+input ArticleFilter {
   title: StringFilter
   body: RichTextFilter
 }
 
-type PostConnectionEdges {
+type ArticleConnectionEdges {
   cursor: String!
-  node: Post
+  node: Article
 }
 
-type PostConnection implements Connection {
+type ArticleConnection implements Connection {
   pageInfo: PageInfo!
   totalCount: Float!
-  edges: [PostConnectionEdges]
+  edges: [ArticleConnectionEdges]
 }
 
 type Mutation {
@@ -128,20 +128,20 @@ type Mutation {
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
   deleteDocument(collection: String, relativePath: String!): DocumentNode!
   createDocument(collection: String, relativePath: String!, params: DocumentMutation!): DocumentNode!
-  updatePost(relativePath: String!, params: PostMutation!): Post!
-  createPost(relativePath: String!, params: PostMutation!): Post!
+  updateArticle(relativePath: String!, params: ArticleMutation!): Article!
+  createArticle(relativePath: String!, params: ArticleMutation!): Article!
 }
 
 input DocumentUpdateMutation {
-  post: PostMutation
+  article: ArticleMutation
   relativePath: String
 }
 
 input DocumentMutation {
-  post: PostMutation
+  article: ArticleMutation
 }
 
-input PostMutation {
+input ArticleMutation {
   title: String
   body: JSON
 }

@@ -79,8 +79,8 @@ export type Query = {
   collections: Array<Collection>;
   node: Node;
   document: DocumentNode;
-  post: Post;
-  postConnection: PostConnection;
+  article: Article;
+  articleConnection: ArticleConnection;
 };
 
 
@@ -105,22 +105,22 @@ export type QueryDocumentArgs = {
 };
 
 
-export type QueryPostArgs = {
+export type QueryArticleArgs = {
   relativePath?: InputMaybe<Scalars['String']>;
 };
 
 
-export type QueryPostConnectionArgs = {
+export type QueryArticleConnectionArgs = {
   before?: InputMaybe<Scalars['String']>;
   after?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Float']>;
   last?: InputMaybe<Scalars['Float']>;
   sort?: InputMaybe<Scalars['String']>;
-  filter?: InputMaybe<PostFilter>;
+  filter?: InputMaybe<ArticleFilter>;
 };
 
 export type DocumentFilter = {
-  post?: InputMaybe<PostFilter>;
+  article?: InputMaybe<ArticleFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -160,10 +160,10 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']>;
 };
 
-export type DocumentNode = Post | Folder;
+export type DocumentNode = Article | Folder;
 
-export type Post = Node & Document & {
-  __typename?: 'Post';
+export type Article = Node & Document & {
+  __typename?: 'Article';
   title: Scalars['String'];
   body?: Maybe<Scalars['JSON']>;
   id: Scalars['ID'];
@@ -184,22 +184,22 @@ export type RichTextFilter = {
   exists?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type PostFilter = {
+export type ArticleFilter = {
   title?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
 };
 
-export type PostConnectionEdges = {
-  __typename?: 'PostConnectionEdges';
+export type ArticleConnectionEdges = {
+  __typename?: 'ArticleConnectionEdges';
   cursor: Scalars['String'];
-  node?: Maybe<Post>;
+  node?: Maybe<Article>;
 };
 
-export type PostConnection = Connection & {
-  __typename?: 'PostConnection';
+export type ArticleConnection = Connection & {
+  __typename?: 'ArticleConnection';
   pageInfo: PageInfo;
   totalCount: Scalars['Float'];
-  edges?: Maybe<Array<Maybe<PostConnectionEdges>>>;
+  edges?: Maybe<Array<Maybe<ArticleConnectionEdges>>>;
 };
 
 export type Mutation = {
@@ -208,8 +208,8 @@ export type Mutation = {
   updateDocument: DocumentNode;
   deleteDocument: DocumentNode;
   createDocument: DocumentNode;
-  updatePost: Post;
-  createPost: Post;
+  updateArticle: Article;
+  createArticle: Article;
 };
 
 
@@ -240,61 +240,61 @@ export type MutationCreateDocumentArgs = {
 };
 
 
-export type MutationUpdatePostArgs = {
+export type MutationUpdateArticleArgs = {
   relativePath: Scalars['String'];
-  params: PostMutation;
+  params: ArticleMutation;
 };
 
 
-export type MutationCreatePostArgs = {
+export type MutationCreateArticleArgs = {
   relativePath: Scalars['String'];
-  params: PostMutation;
+  params: ArticleMutation;
 };
 
 export type DocumentUpdateMutation = {
-  post?: InputMaybe<PostMutation>;
+  article?: InputMaybe<ArticleMutation>;
   relativePath?: InputMaybe<Scalars['String']>;
 };
 
 export type DocumentMutation = {
-  post?: InputMaybe<PostMutation>;
+  article?: InputMaybe<ArticleMutation>;
 };
 
-export type PostMutation = {
+export type ArticleMutation = {
   title?: InputMaybe<Scalars['String']>;
   body?: InputMaybe<Scalars['JSON']>;
 };
 
-export type PostPartsFragment = { __typename?: 'Post', title: string, body?: any | null };
+export type ArticlePartsFragment = { __typename?: 'Article', title: string, body?: any | null };
 
-export type PostQueryVariables = Exact<{
+export type ArticleQueryVariables = Exact<{
   relativePath: Scalars['String'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ArticleQuery = { __typename?: 'Query', article: { __typename?: 'Article', id: string, title: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
-export type PostConnectionQueryVariables = Exact<{
+export type ArticleConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']>;
   after?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Float']>;
   last?: InputMaybe<Scalars['Float']>;
   sort?: InputMaybe<Scalars['String']>;
-  filter?: InputMaybe<PostFilter>;
+  filter?: InputMaybe<ArticleFilter>;
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ArticleConnectionQuery = { __typename?: 'Query', articleConnection: { __typename?: 'ArticleConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ArticleConnectionEdges', cursor: string, node?: { __typename?: 'Article', id: string, title: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
-export const PostPartsFragmentDoc = gql`
-    fragment PostParts on Post {
+export const ArticlePartsFragmentDoc = gql`
+    fragment ArticleParts on Article {
   title
   body
 }
     `;
-export const PostDocument = gql`
-    query post($relativePath: String!) {
-  post(relativePath: $relativePath) {
+export const ArticleDocument = gql`
+    query article($relativePath: String!) {
+  article(relativePath: $relativePath) {
     ... on Document {
       _sys {
         filename
@@ -306,13 +306,13 @@ export const PostDocument = gql`
       }
       id
     }
-    ...PostParts
+    ...ArticleParts
   }
 }
-    ${PostPartsFragmentDoc}`;
-export const PostConnectionDocument = gql`
-    query postConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: PostFilter) {
-  postConnection(
+    ${ArticlePartsFragmentDoc}`;
+export const ArticleConnectionDocument = gql`
+    query articleConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ArticleFilter) {
+  articleConnection(
     before: $before
     after: $after
     first: $first
@@ -341,20 +341,20 @@ export const PostConnectionDocument = gql`
           }
           id
         }
-        ...PostParts
+        ...ArticleParts
       }
     }
   }
 }
-    ${PostPartsFragmentDoc}`;
+    ${ArticlePartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
-      post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, variables: PostQueryVariables, query: string}> {
-        return requester<{data: PostQuery, variables: PostQueryVariables, query: string}, PostQueryVariables>(PostDocument, variables, options);
+      article(variables: ArticleQueryVariables, options?: C): Promise<{data: ArticleQuery, variables: ArticleQueryVariables, query: string}> {
+        return requester<{data: ArticleQuery, variables: ArticleQueryVariables, query: string}, ArticleQueryVariables>(ArticleDocument, variables, options);
       },
-    postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}> {
-        return requester<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}, PostConnectionQueryVariables>(PostConnectionDocument, variables, options);
+    articleConnection(variables?: ArticleConnectionQueryVariables, options?: C): Promise<{data: ArticleConnectionQuery, variables: ArticleConnectionQueryVariables, query: string}> {
+        return requester<{data: ArticleConnectionQuery, variables: ArticleConnectionQueryVariables, query: string}, ArticleConnectionQueryVariables>(ArticleConnectionDocument, variables, options);
       }
     };
   }

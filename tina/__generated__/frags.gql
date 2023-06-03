@@ -1,4 +1,4 @@
-fragment PostParts on Post {
+fragment ArticleParts on Article {
   title
   body
 }
