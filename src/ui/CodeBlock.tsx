@@ -8,8 +8,10 @@ import { ComponentSharedCodeBlock } from "@api";
 SyntaxHighlighter.registerLanguage("dax", dax);
 SyntaxHighlighter.registerLanguage("python", python);
 
-interface CodeBlockProps
-  extends Pick<ComponentSharedCodeBlock, "lang" | "content"> {}
+interface CodeBlockProps {
+    content: string;
+    lang?: string | null;
+}
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ lang, content }) => {
   return (

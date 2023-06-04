@@ -81,6 +81,8 @@ export type Query = {
   document: DocumentNode;
   article: Article;
   articleConnection: ArticleConnection;
+  header: Header;
+  headerConnection: HeaderConnection;
 };
 
 
@@ -119,8 +121,24 @@ export type QueryArticleConnectionArgs = {
   filter?: InputMaybe<ArticleFilter>;
 };
 
+
+export type QueryHeaderArgs = {
+  relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryHeaderConnectionArgs = {
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<HeaderFilter>;
+};
+
 export type DocumentFilter = {
   article?: InputMaybe<ArticleFilter>;
+  header?: InputMaybe<HeaderFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -160,12 +178,32 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']>;
 };
 
-export type DocumentNode = Article | Folder;
+export type DocumentNode = Article | Header | Folder;
+
+export type ArticleBlocksRichText = {
+  __typename?: 'ArticleBlocksRichText';
+  body: Scalars['JSON'];
+};
+
+export type ArticleBlocksMedia = {
+  __typename?: 'ArticleBlocksMedia';
+  file: Scalars['String'];
+};
+
+export type ArticleBlocksCode = {
+  __typename?: 'ArticleBlocksCode';
+  content?: Maybe<Scalars['String']>;
+  lang?: Maybe<Scalars['String']>;
+};
+
+export type ArticleBlocks = ArticleBlocksRichText | ArticleBlocksMedia | ArticleBlocksCode;
 
 export type Article = Node & Document & {
   __typename?: 'Article';
   title: Scalars['String'];
-  body?: Maybe<Scalars['JSON']>;
+  description: Scalars['String'];
+  publishedAt?: Maybe<Scalars['String']>;
+  blocks?: Maybe<Array<Maybe<ArticleBlocks>>>;
   id: Scalars['ID'];
   _sys: SystemInfo;
   _values: Scalars['JSON'];
@@ -178,15 +216,51 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type DatetimeFilter = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type RichTextFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
   eq?: InputMaybe<Scalars['String']>;
   exists?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ArticleBlocksRichTextFilter = {
+  body?: InputMaybe<RichTextFilter>;
+};
+
+export type ImageFilter = {
+  startsWith?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ArticleBlocksMediaFilter = {
+  file?: InputMaybe<ImageFilter>;
+};
+
+export type ArticleBlocksCodeFilter = {
+  content?: InputMaybe<StringFilter>;
+  lang?: InputMaybe<StringFilter>;
+};
+
+export type ArticleBlocksFilter = {
+  richText?: InputMaybe<ArticleBlocksRichTextFilter>;
+  media?: InputMaybe<ArticleBlocksMediaFilter>;
+  code?: InputMaybe<ArticleBlocksCodeFilter>;
+};
+
 export type ArticleFilter = {
   title?: InputMaybe<StringFilter>;
-  body?: InputMaybe<RichTextFilter>;
+  description?: InputMaybe<StringFilter>;
+  publishedAt?: InputMaybe<DatetimeFilter>;
+  blocks?: InputMaybe<ArticleBlocksFilter>;
 };
 
 export type ArticleConnectionEdges = {
@@ -202,6 +276,33 @@ export type ArticleConnection = Connection & {
   edges?: Maybe<Array<Maybe<ArticleConnectionEdges>>>;
 };
 
+export type Header = Node & Document & {
+  __typename?: 'Header';
+  title: Scalars['String'];
+  subtitle: Scalars['String'];
+  id: Scalars['ID'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON'];
+};
+
+export type HeaderFilter = {
+  title?: InputMaybe<StringFilter>;
+  subtitle?: InputMaybe<StringFilter>;
+};
+
+export type HeaderConnectionEdges = {
+  __typename?: 'HeaderConnectionEdges';
+  cursor: Scalars['String'];
+  node?: Maybe<Header>;
+};
+
+export type HeaderConnection = Connection & {
+  __typename?: 'HeaderConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float'];
+  edges?: Maybe<Array<Maybe<HeaderConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -210,6 +311,8 @@ export type Mutation = {
   createDocument: DocumentNode;
   updateArticle: Article;
   createArticle: Article;
+  updateHeader: Header;
+  createHeader: Header;
 };
 
 
@@ -251,28 +354,70 @@ export type MutationCreateArticleArgs = {
   params: ArticleMutation;
 };
 
+
+export type MutationUpdateHeaderArgs = {
+  relativePath: Scalars['String'];
+  params: HeaderMutation;
+};
+
+
+export type MutationCreateHeaderArgs = {
+  relativePath: Scalars['String'];
+  params: HeaderMutation;
+};
+
 export type DocumentUpdateMutation = {
   article?: InputMaybe<ArticleMutation>;
+  header?: InputMaybe<HeaderMutation>;
   relativePath?: InputMaybe<Scalars['String']>;
 };
 
 export type DocumentMutation = {
   article?: InputMaybe<ArticleMutation>;
+  header?: InputMaybe<HeaderMutation>;
+};
+
+export type ArticleBlocksRichTextMutation = {
+  body?: InputMaybe<Scalars['JSON']>;
+};
+
+export type ArticleBlocksMediaMutation = {
+  file?: InputMaybe<Scalars['String']>;
+};
+
+export type ArticleBlocksCodeMutation = {
+  content?: InputMaybe<Scalars['String']>;
+  lang?: InputMaybe<Scalars['String']>;
+};
+
+export type ArticleBlocksMutation = {
+  richText?: InputMaybe<ArticleBlocksRichTextMutation>;
+  media?: InputMaybe<ArticleBlocksMediaMutation>;
+  code?: InputMaybe<ArticleBlocksCodeMutation>;
 };
 
 export type ArticleMutation = {
   title?: InputMaybe<Scalars['String']>;
-  body?: InputMaybe<Scalars['JSON']>;
+  description?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['String']>;
+  blocks?: InputMaybe<Array<InputMaybe<ArticleBlocksMutation>>>;
 };
 
-export type ArticlePartsFragment = { __typename?: 'Article', title: string, body?: any | null };
+export type HeaderMutation = {
+  title?: InputMaybe<Scalars['String']>;
+  subtitle?: InputMaybe<Scalars['String']>;
+};
+
+export type ArticlePartsFragment = { __typename?: 'Article', title: string, description: string, publishedAt?: string | null, blocks?: Array<{ __typename: 'ArticleBlocksRichText', body: any } | { __typename: 'ArticleBlocksMedia', file: string } | { __typename: 'ArticleBlocksCode', content?: string | null, lang?: string | null } | null> | null };
+
+export type HeaderPartsFragment = { __typename?: 'Header', title: string, subtitle: string };
 
 export type ArticleQueryVariables = Exact<{
   relativePath: Scalars['String'];
 }>;
 
 
-export type ArticleQuery = { __typename?: 'Query', article: { __typename?: 'Article', id: string, title: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ArticleQuery = { __typename?: 'Query', article: { __typename?: 'Article', id: string, title: string, description: string, publishedAt?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'ArticleBlocksRichText', body: any } | { __typename: 'ArticleBlocksMedia', file: string } | { __typename: 'ArticleBlocksCode', content?: string | null, lang?: string | null } | null> | null } };
 
 export type ArticleConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']>;
@@ -284,12 +429,51 @@ export type ArticleConnectionQueryVariables = Exact<{
 }>;
 
 
-export type ArticleConnectionQuery = { __typename?: 'Query', articleConnection: { __typename?: 'ArticleConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ArticleConnectionEdges', cursor: string, node?: { __typename?: 'Article', id: string, title: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ArticleConnectionQuery = { __typename?: 'Query', articleConnection: { __typename?: 'ArticleConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ArticleConnectionEdges', cursor: string, node?: { __typename?: 'Article', id: string, title: string, description: string, publishedAt?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'ArticleBlocksRichText', body: any } | { __typename: 'ArticleBlocksMedia', file: string } | { __typename: 'ArticleBlocksCode', content?: string | null, lang?: string | null } | null> | null } | null } | null> | null } };
+
+export type HeaderQueryVariables = Exact<{
+  relativePath: Scalars['String'];
+}>;
+
+
+export type HeaderQuery = { __typename?: 'Query', header: { __typename?: 'Header', id: string, title: string, subtitle: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type HeaderConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<HeaderFilter>;
+}>;
+
+
+export type HeaderConnectionQuery = { __typename?: 'Query', headerConnection: { __typename?: 'HeaderConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HeaderConnectionEdges', cursor: string, node?: { __typename?: 'Header', id: string, title: string, subtitle: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const ArticlePartsFragmentDoc = gql`
     fragment ArticleParts on Article {
   title
-  body
+  description
+  publishedAt
+  blocks {
+    __typename
+    ... on ArticleBlocksRichText {
+      body
+    }
+    ... on ArticleBlocksMedia {
+      file
+    }
+    ... on ArticleBlocksCode {
+      content
+      lang
+    }
+  }
+}
+    `;
+export const HeaderPartsFragmentDoc = gql`
+    fragment HeaderParts on Header {
+  title
+  subtitle
 }
     `;
 export const ArticleDocument = gql`
@@ -347,6 +531,61 @@ export const ArticleConnectionDocument = gql`
   }
 }
     ${ArticlePartsFragmentDoc}`;
+export const HeaderDocument = gql`
+    query header($relativePath: String!) {
+  header(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HeaderParts
+  }
+}
+    ${HeaderPartsFragmentDoc}`;
+export const HeaderConnectionDocument = gql`
+    query headerConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HeaderFilter) {
+  headerConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...HeaderParts
+      }
+    }
+  }
+}
+    ${HeaderPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -355,6 +594,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     articleConnection(variables?: ArticleConnectionQueryVariables, options?: C): Promise<{data: ArticleConnectionQuery, variables: ArticleConnectionQueryVariables, query: string}> {
         return requester<{data: ArticleConnectionQuery, variables: ArticleConnectionQueryVariables, query: string}, ArticleConnectionQueryVariables>(ArticleConnectionDocument, variables, options);
+      },
+    header(variables: HeaderQueryVariables, options?: C): Promise<{data: HeaderQuery, variables: HeaderQueryVariables, query: string}> {
+        return requester<{data: HeaderQuery, variables: HeaderQueryVariables, query: string}, HeaderQueryVariables>(HeaderDocument, variables, options);
+      },
+    headerConnection(variables?: HeaderConnectionQueryVariables, options?: C): Promise<{data: HeaderConnectionQuery, variables: HeaderConnectionQueryVariables, query: string}> {
+        return requester<{data: HeaderConnectionQuery, variables: HeaderConnectionQueryVariables, query: string}, HeaderConnectionQueryVariables>(HeaderConnectionDocument, variables, options);
       }
     };
   }

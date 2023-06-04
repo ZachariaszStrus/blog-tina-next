@@ -1,4 +1,84 @@
-import { defineConfig } from "tinacms";
+import {Collection, defineConfig} from "tinacms";
+import type { Template } from 'tinacms'
+
+const richTextBlock: Template = {
+  name: 'richText',
+  label: 'Rich text',
+  fields: [
+    {
+      type: 'rich-text',
+      label: 'Body',
+      name: 'body',
+      required: true,
+    },
+  ],
+}
+
+const mediaBlock: Template = {
+  name: 'media',
+  label: 'Media',
+  fields: [
+    {
+      type: 'image',
+      label: 'File',
+      name: 'file',
+      required: true,
+    },
+  ],
+}
+
+const codeBlock: Template = {
+  name: 'code',
+  label: 'Code',
+  fields: [
+    {
+      type: 'string',
+      label: 'Content',
+      name: 'content',
+      ui: {
+        component: 'textarea',
+      },
+    },
+    {
+      type: 'string',
+      label: 'Language',
+      name: 'lang',
+    },
+  ],
+}
+
+const article: Collection = {
+  name: "article",
+  label: "Articles",
+  path: "content/articles",
+  fields: [
+    {
+      type: "string",
+      name: "title",
+      label: "Title",
+      isTitle: true,
+      required: true,
+    },
+    {
+      type: "string",
+      name: "description",
+      label: "Description",
+      required: true,
+    },
+    {
+      type: "datetime",
+      name: "publishedAt",
+      label: "Published at",
+    },
+    {
+      type: 'object',
+      list: true,
+      name: 'blocks',
+      label: 'Blocks',
+      templates: [richTextBlock, mediaBlock, codeBlock],
+    },
+  ],
+}
 
 // Your hosting provider likely exposes this as an environment variable
 const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "main";
@@ -14,32 +94,38 @@ export default defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: "",
+      mediaRoot: "tina",
       publicFolder: "public",
     },
   },
   schema: {
     collections: [
+      article,
       {
-        name: "article",
-        label: "Articles",
-        path: "content/posts",
+        name: "header",
+        label: "Header",
+        path: "content/headers",
+        ui: {
+          allowedActions: {
+            delete: false,
+            create: false,
+          }
+        },
         fields: [
           {
             type: "string",
             name: "title",
             label: "Title",
-            isTitle: true,
             required: true,
           },
           {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
-            isBody: true,
+            type: "string",
+            name: "subtitle",
+            label: "Subtitle",
+            required: true,
           },
         ],
-      },
+      }
     ],
   },
 });

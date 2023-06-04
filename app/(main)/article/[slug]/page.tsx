@@ -1,5 +1,6 @@
 import { ArticleDetailsComponent, CommentsGiscus } from "@ui";
 import { notFound } from "next/navigation";
+import client from "../../../../tina/__generated__/client";
 
 // export const dynamicParams = false;
 //
@@ -32,5 +33,20 @@ const ArticleDetails = async ({ params }: { params: { slug: string } }) => {
   //     )}
   //   </div>
   // );
+
+  const { data } = await client.queries.article({ relativePath: `${params.slug}.md` })
+  const article = data.article;
+
+  return (
+    <div className="flex w-full flex-col">
+      {article && (
+        <ArticleDetailsComponent
+          title={article.title}
+          blocks={article.blocks}
+          publishedAt={article.publishedAt}
+        />
+      )}
+    </div>
+  );
 };
 export default ArticleDetails;

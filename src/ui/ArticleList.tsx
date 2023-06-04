@@ -8,7 +8,7 @@ import {routes} from "@utils";
 import {Article} from "../../tina/__generated__/types";
 
 interface HomeProps {
-  articles: Pick<Article, "title" | "id">[];
+  articles: Pick<Article, "title" | "id" | "publishedAt" | "description" | "_sys">[];
   page: number;
   pageCount: number;
 }
@@ -26,9 +26,9 @@ export const ArticleList: FC<HomeProps> = ({ articles, pageCount, page }) => {
               <ArticleListComponent
                   key={article.id}
                   title={article.title}
-                  createdAt={new Date().toISOString()}
-                  description={""}
-                  slug={""}
+                  createdAt={article.publishedAt}
+                  description={article.description}
+                  slug={article._sys.filename}
               />
           )
         )}

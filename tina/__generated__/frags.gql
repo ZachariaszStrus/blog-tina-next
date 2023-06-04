@@ -1,4 +1,23 @@
 fragment ArticleParts on Article {
   title
-  body
+  description
+  publishedAt
+  blocks {
+    __typename
+    ... on ArticleBlocksRichText {
+      body
+    }
+    ... on ArticleBlocksMedia {
+      file
+    }
+    ... on ArticleBlocksCode {
+      content
+      lang
+    }
+  }
+}
+
+fragment HeaderParts on Header {
+  title
+  subtitle
 }

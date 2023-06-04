@@ -1,6 +1,7 @@
 import { ArticleList } from "@ui";
 import { notFound } from "next/navigation";
 import client from "../../tina/__generated__/client";
+import {Article} from "../../tina/__generated__/types";
 
 const HomePage = async () => {
   // const response = await api.articleList({ page: 1 });
@@ -16,7 +17,8 @@ const HomePage = async () => {
 
   const { data } = await client.queries.articleConnection()
 
-  const articles = data.articleConnection.edges?.map(e => e?.node) || []
+  const articles = data.articleConnection.edges?.filter(e => !!e)
+      .map(e => e?.node) as Article[] || []
 
   return <ArticleList articles={articles} page={1} pageCount={1} />;
 };

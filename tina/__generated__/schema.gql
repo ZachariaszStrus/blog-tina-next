@@ -55,10 +55,13 @@ type Query {
   document(collection: String, relativePath: String): DocumentNode!
   article(relativePath: String): Article!
   articleConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ArticleFilter): ArticleConnection!
+  header(relativePath: String): Header!
+  headerConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HeaderFilter): HeaderConnection!
 }
 
 input DocumentFilter {
   article: ArticleFilter
+  header: HeaderFilter
 }
 
 type DocumentConnectionEdges {
@@ -84,11 +87,28 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Article | Folder
+union DocumentNode = Article | Header | Folder
+
+type ArticleBlocksRichText {
+  body: JSON!
+}
+
+type ArticleBlocksMedia {
+  file: String!
+}
+
+type ArticleBlocksCode {
+  content: String
+  lang: String
+}
+
+union ArticleBlocks = ArticleBlocksRichText | ArticleBlocksMedia | ArticleBlocksCode
 
 type Article implements Node & Document {
   title: String!
-  body: JSON
+  description: String!
+  publishedAt: String
+  blocks: [ArticleBlocks]
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -101,15 +121,51 @@ input StringFilter {
   in: [String]
 }
 
+input DatetimeFilter {
+  after: String
+  before: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
 input RichTextFilter {
   startsWith: String
   eq: String
   exists: Boolean
 }
 
+input ArticleBlocksRichTextFilter {
+  body: RichTextFilter
+}
+
+input ImageFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input ArticleBlocksMediaFilter {
+  file: ImageFilter
+}
+
+input ArticleBlocksCodeFilter {
+  content: StringFilter
+  lang: StringFilter
+}
+
+input ArticleBlocksFilter {
+  richText: ArticleBlocksRichTextFilter
+  media: ArticleBlocksMediaFilter
+  code: ArticleBlocksCodeFilter
+}
+
 input ArticleFilter {
   title: StringFilter
-  body: RichTextFilter
+  description: StringFilter
+  publishedAt: DatetimeFilter
+  blocks: ArticleBlocksFilter
 }
 
 type ArticleConnectionEdges {
@@ -123,6 +179,30 @@ type ArticleConnection implements Connection {
   edges: [ArticleConnectionEdges]
 }
 
+type Header implements Node & Document {
+  title: String!
+  subtitle: String!
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input HeaderFilter {
+  title: StringFilter
+  subtitle: StringFilter
+}
+
+type HeaderConnectionEdges {
+  cursor: String!
+  node: Header
+}
+
+type HeaderConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [HeaderConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -130,20 +210,50 @@ type Mutation {
   createDocument(collection: String, relativePath: String!, params: DocumentMutation!): DocumentNode!
   updateArticle(relativePath: String!, params: ArticleMutation!): Article!
   createArticle(relativePath: String!, params: ArticleMutation!): Article!
+  updateHeader(relativePath: String!, params: HeaderMutation!): Header!
+  createHeader(relativePath: String!, params: HeaderMutation!): Header!
 }
 
 input DocumentUpdateMutation {
   article: ArticleMutation
+  header: HeaderMutation
   relativePath: String
 }
 
 input DocumentMutation {
   article: ArticleMutation
+  header: HeaderMutation
+}
+
+input ArticleBlocksRichTextMutation {
+  body: JSON
+}
+
+input ArticleBlocksMediaMutation {
+  file: String
+}
+
+input ArticleBlocksCodeMutation {
+  content: String
+  lang: String
+}
+
+input ArticleBlocksMutation {
+  richText: ArticleBlocksRichTextMutation
+  media: ArticleBlocksMediaMutation
+  code: ArticleBlocksCodeMutation
 }
 
 input ArticleMutation {
   title: String
-  body: JSON
+  description: String
+  publishedAt: String
+  blocks: [ArticleBlocksMutation]
+}
+
+input HeaderMutation {
+  title: String
+  subtitle: String
 }
 
 schema {
