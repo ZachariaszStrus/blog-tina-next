@@ -34,7 +34,7 @@ const ArticleDetails = async ({ params }: { params: { slug: string } }) => {
   //   </div>
   // );
 
-  const { data } = await client.queries.article({ relativePath: `${params.slug}.md` })
+  const { data } = await client.queries.article({ relativePath: `${params.slug}.json` })
   const article = data.article;
 
   return (

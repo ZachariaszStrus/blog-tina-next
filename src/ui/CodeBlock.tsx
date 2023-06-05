@@ -3,15 +3,12 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import python from "react-syntax-highlighter/dist/cjs/languages/prism/python";
 import dax from "react-syntax-highlighter/dist/cjs/languages/prism/dax";
 import dracula from "react-syntax-highlighter/dist/cjs/styles/prism/dracula";
-import { ComponentSharedCodeBlock } from "@api";
+import {ArticleBlocksCode} from "../../tina/__generated__/types";
 
 SyntaxHighlighter.registerLanguage("dax", dax);
 SyntaxHighlighter.registerLanguage("python", python);
 
-interface CodeBlockProps {
-    content: string;
-    lang?: string | null;
-}
+type CodeBlockProps = Pick<ArticleBlocksCode, "lang" | "content">;
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ lang, content }) => {
   return (
@@ -22,7 +19,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ lang, content }) => {
           style={dracula}
           wrapLongLines
         >
-          {content}
+          {content || ""}
         </SyntaxHighlighter>
       </div>
     </div>

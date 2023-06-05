@@ -21,3 +21,19 @@ fragment HeaderParts on Header {
   title
   subtitle
 }
+
+fragment AboutParts on About {
+  blocks {
+    __typename
+    ... on AboutBlocksRichText {
+      body
+    }
+    ... on AboutBlocksMedia {
+      file
+    }
+    ... on AboutBlocksCode {
+      content
+      lang
+    }
+  }
+}

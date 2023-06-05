@@ -51,6 +51,7 @@ const article: Collection = {
   name: "article",
   label: "Articles",
   path: "content/articles",
+  format: 'json',
   fields: [
     {
       type: "string",
@@ -80,6 +81,55 @@ const article: Collection = {
   ],
 }
 
+const header: Collection = {
+  name: "header",
+  label: "Header",
+  path: "content/header",
+  format: 'json',
+  ui: {
+    allowedActions: {
+      delete: false,
+      create: false,
+    }
+  },
+  fields: [
+    {
+      type: "string",
+      name: "title",
+      label: "Title",
+      required: true,
+    },
+    {
+      type: "string",
+      name: "subtitle",
+      label: "Subtitle",
+      required: true,
+    },
+  ],
+}
+
+const about: Collection = {
+  name: "about",
+  label: "About",
+  path: "content/about",
+  format: 'json',
+  ui: {
+    allowedActions: {
+      delete: false,
+      create: false,
+    }
+  },
+  fields: [
+    {
+      type: 'object',
+      list: true,
+      name: 'blocks',
+      label: 'Blocks',
+      templates: [richTextBlock, mediaBlock, codeBlock],
+    },
+  ],
+}
+
 // Your hosting provider likely exposes this as an environment variable
 const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "main";
 
@@ -87,7 +137,6 @@ export default defineConfig({
   branch: branch,
   clientId: "6054d6e9-a640-40a5-883f-ba0a2db44867",
   token: "a678b1ffb4f84d036bfec42f745c648f616d51cc",
-
   build: {
     outputFolder: "admin",
     publicFolder: "public",
@@ -101,31 +150,8 @@ export default defineConfig({
   schema: {
     collections: [
       article,
-      {
-        name: "header",
-        label: "Header",
-        path: "content/headers",
-        ui: {
-          allowedActions: {
-            delete: false,
-            create: false,
-          }
-        },
-        fields: [
-          {
-            type: "string",
-            name: "title",
-            label: "Title",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "subtitle",
-            label: "Subtitle",
-            required: true,
-          },
-        ],
-      }
+      header,
+      about,
     ],
   },
 });

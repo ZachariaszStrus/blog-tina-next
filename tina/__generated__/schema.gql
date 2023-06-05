@@ -57,11 +57,14 @@ type Query {
   articleConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ArticleFilter): ArticleConnection!
   header(relativePath: String): Header!
   headerConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HeaderFilter): HeaderConnection!
+  about(relativePath: String): About!
+  aboutConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: AboutFilter): AboutConnection!
 }
 
 input DocumentFilter {
   article: ArticleFilter
   header: HeaderFilter
+  about: AboutFilter
 }
 
 type DocumentConnectionEdges {
@@ -87,7 +90,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Article | Header | Folder
+union DocumentNode = Article | Header | About | Folder
 
 type ArticleBlocksRichText {
   body: JSON!
@@ -203,6 +206,62 @@ type HeaderConnection implements Connection {
   edges: [HeaderConnectionEdges]
 }
 
+type AboutBlocksRichText {
+  body: JSON!
+}
+
+type AboutBlocksMedia {
+  file: String!
+}
+
+type AboutBlocksCode {
+  content: String
+  lang: String
+}
+
+union AboutBlocks = AboutBlocksRichText | AboutBlocksMedia | AboutBlocksCode
+
+type About implements Node & Document {
+  blocks: [AboutBlocks]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input AboutBlocksRichTextFilter {
+  body: RichTextFilter
+}
+
+input AboutBlocksMediaFilter {
+  file: ImageFilter
+}
+
+input AboutBlocksCodeFilter {
+  content: StringFilter
+  lang: StringFilter
+}
+
+input AboutBlocksFilter {
+  richText: AboutBlocksRichTextFilter
+  media: AboutBlocksMediaFilter
+  code: AboutBlocksCodeFilter
+}
+
+input AboutFilter {
+  blocks: AboutBlocksFilter
+}
+
+type AboutConnectionEdges {
+  cursor: String!
+  node: About
+}
+
+type AboutConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [AboutConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -212,17 +271,21 @@ type Mutation {
   createArticle(relativePath: String!, params: ArticleMutation!): Article!
   updateHeader(relativePath: String!, params: HeaderMutation!): Header!
   createHeader(relativePath: String!, params: HeaderMutation!): Header!
+  updateAbout(relativePath: String!, params: AboutMutation!): About!
+  createAbout(relativePath: String!, params: AboutMutation!): About!
 }
 
 input DocumentUpdateMutation {
   article: ArticleMutation
   header: HeaderMutation
+  about: AboutMutation
   relativePath: String
 }
 
 input DocumentMutation {
   article: ArticleMutation
   header: HeaderMutation
+  about: AboutMutation
 }
 
 input ArticleBlocksRichTextMutation {
@@ -254,6 +317,29 @@ input ArticleMutation {
 input HeaderMutation {
   title: String
   subtitle: String
+}
+
+input AboutBlocksRichTextMutation {
+  body: JSON
+}
+
+input AboutBlocksMediaMutation {
+  file: String
+}
+
+input AboutBlocksCodeMutation {
+  content: String
+  lang: String
+}
+
+input AboutBlocksMutation {
+  richText: AboutBlocksRichTextMutation
+  media: AboutBlocksMediaMutation
+  code: AboutBlocksCodeMutation
+}
+
+input AboutMutation {
+  blocks: [AboutBlocksMutation]
 }
 
 schema {

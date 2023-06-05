@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { About } from "@api";
 import * as React from "react";
 import ContentWrapper from "./ContentWrapper";
 import { Block } from "./Block";
+import {About} from "../../tina/__generated__/types";
 
 export interface AboutComponentProps extends Pick<About, "blocks"> {}
 

@@ -1,4 +1,5 @@
 import { MainTemplate } from "@ui";
+import client from "../../tina/__generated__/client";
 
 export default async function RootLayout({
   children,
@@ -25,10 +26,14 @@ export default async function RootLayout({
   //     {children}
   //   </MainTemplate>
   // );
+
+  const { data: { header } } = await client.queries.header({ relativePath: "header.json" });
+  const { data: { about } } = await client.queries.about({ relativePath: "about.json" });
+
   return (
     <MainTemplate
-      header={{}}
-      isAboutInfoAvailable={true}
+      header={header}
+      isAboutInfoAvailable={!!about?.blocks?.length}
       socialMediaItems={[]}
     >
       {children}
