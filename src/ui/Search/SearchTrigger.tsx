@@ -5,5 +5,9 @@ import { displaySearchState } from "./state";
 
 export const SearchTrigger = () => {
   const [, setShowModal] = useAtom(displaySearchState);
+
+  // todo: recreate
+  return null;
+
   return <Input onClick={() => setShowModal(true)} readOnly />;
 };
