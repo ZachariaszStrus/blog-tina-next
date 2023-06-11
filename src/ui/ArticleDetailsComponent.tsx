@@ -6,7 +6,7 @@ import * as React from "react";
 import ContentWrapper from "./ContentWrapper";
 import { Block } from "./Block";
 import { CommentsGiscus } from "./CommentsGiscus";
-import {Article} from "../../tina/__generated__/types";
+import { Article } from "@tinaGenerated";
 
 export interface ArticleDetailsComponentProps
   extends Pick<Article, "title" | "publishedAt" | "blocks"> {}

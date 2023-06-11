@@ -3,7 +3,7 @@ import MediaBlock from "./MediaBlock";
 import RichText from "./RichText";
 import CodeBlock from "./CodeBlock";
 import * as React from "react";
-import {AboutBlocks, ArticleBlocks} from "../../tina/__generated__/types";
+import { AboutBlocks, ArticleBlocks } from "@tinaGenerated";
 
 export const Block = ({
   block,

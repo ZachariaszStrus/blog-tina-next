@@ -19,7 +19,7 @@ const BigScreenNav = ({
   socialMediaItems,
 }: BigScreenNavProps) => {
   return (
-    <div className="sticky top-0 flex h-screen flex-col justify-between pt-8 pb-24">
+    <div className="sticky top-0 flex h-screen flex-col justify-between pb-24 pt-8">
       <div className="flex flex-col gap-8">
         {header && <BlogTitle header={header} />}{" "}
         <Navbar isAboutInfoAvailable={isAboutInfoAvailable} />

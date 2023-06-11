@@ -19,16 +19,19 @@
         "name": "next"
       }
     ],
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
+      "@tinaGenerated": [
+        "tina/index"
+      ],
       "@api": [
-        "api/index"
+        "src/api/index"
       ],
       "@ui": [
-        "ui/index"
+        "src/ui/index"
       ],
       "@utils": [
-        "utils/index"
+        "src/utils/index"
       ]
     }
   },

@@ -1,40 +1,30 @@
 import { ArticleDetailsComponent, CommentsGiscus } from "@ui";
-import { notFound } from "next/navigation";
-import client from "../../../../tina/__generated__/client";
+import { Metadata } from "next";
+import { client } from "@tinaGenerated";
 
-// export const dynamicParams = false;
-//
-// export const generateStaticParams = async () => {
-//   const response = await api.articleSlugList();
-//
-//   return (
-//     response.articles?.data
-//       ?.filter(({ attributes }) => !!attributes?.slug)
-//       ?.map(({ attributes }) => ({ slug: attributes?.slug as string })) || []
-//   );
-// };
+interface ArticleDetailsParams {
+  slug: string;
+}
 
-const ArticleDetails = async ({ params }: { params: { slug: string } }) => {
-  // const response = await api.articleDetails({ slug: params.slug || "" });
-  // const article = response?.article?.data?.attributes;
-  //
-  // if (!article) {
-  //   return notFound();
-  // }
-  //
-  // return (
-  //   <div className="flex w-full flex-col">
-  //     {article && (
-  //       <ArticleDetailsComponent
-  //         title={article.title}
-  //         blocks={article.blocks}
-  //         createdAt={article.createdAt}
-  //       />
-  //     )}
-  //   </div>
-  // );
+export async function generateMetadata({
+  params,
+}: {
+  params: ArticleDetailsParams;
+}): Promise<Metadata> {
+  const { data } = await client.queries.article({
+    relativePath: `${params.slug}.json`,
+  });
+  const article = data.article;
 
-  const { data } = await client.queries.article({ relativePath: `${params.slug}.json` })
+  return {
+    title: article.title,
+  };
+}
+
+const ArticleDetails = async ({ params }: { params: ArticleDetailsParams }) => {
+  const { data } = await client.queries.article({
+    relativePath: `${params.slug}.json`,
+  });
   const article = data.article;
 
   return (

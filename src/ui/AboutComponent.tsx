@@ -2,7 +2,7 @@ import { FC } from "react";
 import * as React from "react";
 import ContentWrapper from "./ContentWrapper";
 import { Block } from "./Block";
-import {About} from "../../tina/__generated__/types";
+import { About } from "@tinaGenerated";
 
 export interface AboutComponentProps extends Pick<About, "blocks"> {}
 

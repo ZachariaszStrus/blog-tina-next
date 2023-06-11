@@ -64,7 +64,7 @@ const SmallScreenNav = ({
       <div>
         <div
           className={clsx(
-            "fixed top-0 left-0 z-50 flex h-screen w-full flex-col bg-background-dark py-8 px-6 md:px-8",
+            "fixed left-0 top-0 z-50 flex h-screen w-full flex-col bg-background-dark px-6 py-8 md:px-8",
             !isNavOpen && "hidden"
           )}
         >
@@ -78,7 +78,7 @@ const SmallScreenNav = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="flex flex-1 flex-col  justify-between py-16 px-4">
+            <div className="flex flex-1 flex-col  justify-between px-4 py-16">
               <Navbar isAboutInfoAvailable={isAboutInfoAvailable} />
               <SocialMediaComponent items={socialMediaItems} />
             </div>

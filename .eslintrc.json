@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next", "prettier"],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "@next/next/no-html-link-for-pages": "off",
+    "react/jsx-key": "off",
+    "react/jsx-curly-brace-presence": ["error", {
+      "props": "never",
+      "children": "ignore",
+      "propElementValues": "always"
+    }]
+  }
 }

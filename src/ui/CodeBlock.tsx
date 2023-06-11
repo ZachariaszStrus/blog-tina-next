@@ -3,7 +3,7 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import python from "react-syntax-highlighter/dist/cjs/languages/prism/python";
 import dax from "react-syntax-highlighter/dist/cjs/languages/prism/dax";
 import dracula from "react-syntax-highlighter/dist/cjs/styles/prism/dracula";
-import {ArticleBlocksCode} from "../../tina/__generated__/types";
+import { ArticleBlocksCode } from "@tinaGenerated";
 
 SyntaxHighlighter.registerLanguage("dax", dax);
 SyntaxHighlighter.registerLanguage("python", python);

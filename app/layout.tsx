@@ -1,6 +1,11 @@
 import { ReactNode } from "react";
 
 import "../styles/globals.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  viewport: "width=device-width, initial-scale=1",
+};
 
 export default async function RootLayout({
   children,

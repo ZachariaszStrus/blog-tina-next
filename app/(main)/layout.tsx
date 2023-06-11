@@ -1,34 +1,47 @@
 import { MainTemplate } from "@ui";
-import client from "../../tina/__generated__/client";
+import { client } from "@tinaGenerated";
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  {},
+  parent?: ResolvingMetadata
+): Promise<Metadata> {
+  // const response = await api.globalDetails();
+  // const global = response.global?.data?.attributes;
+  //
+  // return (
+  //   <>
+  //     <DefaultTags />
+  //     {global?.siteName && <title>{global.siteName}</title>}
+  //     {global?.favicon?.data?.attributes?.url && (
+  //       <link
+  //         rel="shortcut icon"
+  //         // @ts-ignore
+  //         precedence="default"
+  //         href={global.favicon?.data?.attributes?.url}
+  //       />
+  //     )}
+  //   </>
+  // );
+  return {};
+}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const [responseHeader, responseAbout, responseSocial] = await Promise.all([
-  //   api.headerDetails(),
-  //   api.aboutDetails(),
-  //   api.socialMedia(),
-  // ]);
-  // const header = responseHeader.header?.data?.attributes;
-  // const about = responseAbout.about?.data?.attributes;
-  // // todo: fix graphql typing
-  // const socialMedia = (responseSocial.socialMedia?.data?.attributes?.items ||
-  //   []) as Pick<ComponentSharedSocialMediaItem, "title" | "icon" | "url">[];
-  //
-  // return (
-  //   <MainTemplate
-  //     header={header}
-  //     isAboutInfoAvailable={!!about}
-  //     socialMediaItems={socialMedia}
-  //   >
-  //     {children}
-  //   </MainTemplate>
-  // );
-
-  const { data: { header } } = await client.queries.header({ relativePath: "header.json" });
-  const { data: { about } } = await client.queries.about({ relativePath: "about.json" });
+  const [
+    {
+      data: { header },
+    },
+    {
+      data: { about },
+    },
+  ] = await Promise.all([
+    client.queries.header({ relativePath: "header.json" }),
+    client.queries.about({ relativePath: "about.json" }),
+  ]);
 
   return (
     <MainTemplate
