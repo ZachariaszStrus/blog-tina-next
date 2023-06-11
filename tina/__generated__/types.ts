@@ -85,6 +85,8 @@ export type Query = {
   headerConnection: HeaderConnection;
   about: About;
   aboutConnection: AboutConnection;
+  global: Global;
+  globalConnection: GlobalConnection;
 };
 
 
@@ -153,10 +155,26 @@ export type QueryAboutConnectionArgs = {
   filter?: InputMaybe<AboutFilter>;
 };
 
+
+export type QueryGlobalArgs = {
+  relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGlobalConnectionArgs = {
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<GlobalFilter>;
+};
+
 export type DocumentFilter = {
   article?: InputMaybe<ArticleFilter>;
   header?: InputMaybe<HeaderFilter>;
   about?: InputMaybe<AboutFilter>;
+  global?: InputMaybe<GlobalFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -196,7 +214,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']>;
 };
 
-export type DocumentNode = Article | Header | About | Folder;
+export type DocumentNode = Article | Header | About | Global | Folder;
 
 export type ArticleBlocksRichText = {
   __typename?: 'ArticleBlocksRichText';
@@ -383,6 +401,33 @@ export type AboutConnection = Connection & {
   edges?: Maybe<Array<Maybe<AboutConnectionEdges>>>;
 };
 
+export type Global = Node & Document & {
+  __typename?: 'Global';
+  siteName: Scalars['String'];
+  favIcon: Scalars['String'];
+  id: Scalars['ID'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON'];
+};
+
+export type GlobalFilter = {
+  siteName?: InputMaybe<StringFilter>;
+  favIcon?: InputMaybe<ImageFilter>;
+};
+
+export type GlobalConnectionEdges = {
+  __typename?: 'GlobalConnectionEdges';
+  cursor: Scalars['String'];
+  node?: Maybe<Global>;
+};
+
+export type GlobalConnection = Connection & {
+  __typename?: 'GlobalConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float'];
+  edges?: Maybe<Array<Maybe<GlobalConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -395,6 +440,8 @@ export type Mutation = {
   createHeader: Header;
   updateAbout: About;
   createAbout: About;
+  updateGlobal: Global;
+  createGlobal: Global;
 };
 
 
@@ -460,10 +507,23 @@ export type MutationCreateAboutArgs = {
   params: AboutMutation;
 };
 
+
+export type MutationUpdateGlobalArgs = {
+  relativePath: Scalars['String'];
+  params: GlobalMutation;
+};
+
+
+export type MutationCreateGlobalArgs = {
+  relativePath: Scalars['String'];
+  params: GlobalMutation;
+};
+
 export type DocumentUpdateMutation = {
   article?: InputMaybe<ArticleMutation>;
   header?: InputMaybe<HeaderMutation>;
   about?: InputMaybe<AboutMutation>;
+  global?: InputMaybe<GlobalMutation>;
   relativePath?: InputMaybe<Scalars['String']>;
 };
 
@@ -471,6 +531,7 @@ export type DocumentMutation = {
   article?: InputMaybe<ArticleMutation>;
   header?: InputMaybe<HeaderMutation>;
   about?: InputMaybe<AboutMutation>;
+  global?: InputMaybe<GlobalMutation>;
 };
 
 export type ArticleBlocksRichTextMutation = {
@@ -527,11 +588,18 @@ export type AboutMutation = {
   blocks?: InputMaybe<Array<InputMaybe<AboutBlocksMutation>>>;
 };
 
+export type GlobalMutation = {
+  siteName?: InputMaybe<Scalars['String']>;
+  favIcon?: InputMaybe<Scalars['String']>;
+};
+
 export type ArticlePartsFragment = { __typename?: 'Article', title: string, description: string, publishedAt?: string | null, blocks?: Array<{ __typename: 'ArticleBlocksRichText', body: any } | { __typename: 'ArticleBlocksMedia', file: string } | { __typename: 'ArticleBlocksCode', content?: string | null, lang?: string | null } | null> | null };
 
 export type HeaderPartsFragment = { __typename?: 'Header', title: string, subtitle: string };
 
 export type AboutPartsFragment = { __typename?: 'About', blocks?: Array<{ __typename: 'AboutBlocksRichText', body: any } | { __typename: 'AboutBlocksMedia', file: string } | { __typename: 'AboutBlocksCode', content?: string | null, lang?: string | null } | null> | null };
+
+export type GlobalPartsFragment = { __typename?: 'Global', siteName: string, favIcon: string };
 
 export type ArticleQueryVariables = Exact<{
   relativePath: Scalars['String'];
@@ -590,6 +658,25 @@ export type AboutConnectionQueryVariables = Exact<{
 
 export type AboutConnectionQuery = { __typename?: 'Query', aboutConnection: { __typename?: 'AboutConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'AboutConnectionEdges', cursor: string, node?: { __typename?: 'About', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'AboutBlocksRichText', body: any } | { __typename: 'AboutBlocksMedia', file: string } | { __typename: 'AboutBlocksCode', content?: string | null, lang?: string | null } | null> | null } | null } | null> | null } };
 
+export type GlobalQueryVariables = Exact<{
+  relativePath: Scalars['String'];
+}>;
+
+
+export type GlobalQuery = { __typename?: 'Query', global: { __typename?: 'Global', id: string, siteName: string, favIcon: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type GlobalConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<GlobalFilter>;
+}>;
+
+
+export type GlobalConnectionQuery = { __typename?: 'Query', globalConnection: { __typename?: 'GlobalConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'GlobalConnectionEdges', cursor: string, node?: { __typename?: 'Global', id: string, siteName: string, favIcon: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+
 export const ArticlePartsFragmentDoc = gql`
     fragment ArticleParts on Article {
   title
@@ -631,6 +718,12 @@ export const AboutPartsFragmentDoc = gql`
       lang
     }
   }
+}
+    `;
+export const GlobalPartsFragmentDoc = gql`
+    fragment GlobalParts on Global {
+  siteName
+  favIcon
 }
     `;
 export const ArticleDocument = gql`
@@ -798,6 +891,61 @@ export const AboutConnectionDocument = gql`
   }
 }
     ${AboutPartsFragmentDoc}`;
+export const GlobalDocument = gql`
+    query global($relativePath: String!) {
+  global(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...GlobalParts
+  }
+}
+    ${GlobalPartsFragmentDoc}`;
+export const GlobalConnectionDocument = gql`
+    query globalConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: GlobalFilter) {
+  globalConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...GlobalParts
+      }
+    }
+  }
+}
+    ${GlobalPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -818,6 +966,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     aboutConnection(variables?: AboutConnectionQueryVariables, options?: C): Promise<{data: AboutConnectionQuery, variables: AboutConnectionQueryVariables, query: string}> {
         return requester<{data: AboutConnectionQuery, variables: AboutConnectionQueryVariables, query: string}, AboutConnectionQueryVariables>(AboutConnectionDocument, variables, options);
+      },
+    global(variables: GlobalQueryVariables, options?: C): Promise<{data: GlobalQuery, variables: GlobalQueryVariables, query: string}> {
+        return requester<{data: GlobalQuery, variables: GlobalQueryVariables, query: string}, GlobalQueryVariables>(GlobalDocument, variables, options);
+      },
+    globalConnection(variables?: GlobalConnectionQueryVariables, options?: C): Promise<{data: GlobalConnectionQuery, variables: GlobalConnectionQueryVariables, query: string}> {
+        return requester<{data: GlobalConnectionQuery, variables: GlobalConnectionQueryVariables, query: string}, GlobalConnectionQueryVariables>(GlobalConnectionDocument, variables, options);
       }
     };
   }

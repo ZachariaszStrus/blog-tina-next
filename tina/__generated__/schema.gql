@@ -59,12 +59,15 @@ type Query {
   headerConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HeaderFilter): HeaderConnection!
   about(relativePath: String): About!
   aboutConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: AboutFilter): AboutConnection!
+  global(relativePath: String): Global!
+  globalConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: GlobalFilter): GlobalConnection!
 }
 
 input DocumentFilter {
   article: ArticleFilter
   header: HeaderFilter
   about: AboutFilter
+  global: GlobalFilter
 }
 
 type DocumentConnectionEdges {
@@ -90,7 +93,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Article | Header | About | Folder
+union DocumentNode = Article | Header | About | Global | Folder
 
 type ArticleBlocksRichText {
   body: JSON!
@@ -262,6 +265,30 @@ type AboutConnection implements Connection {
   edges: [AboutConnectionEdges]
 }
 
+type Global implements Node & Document {
+  siteName: String!
+  favIcon: String!
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input GlobalFilter {
+  siteName: StringFilter
+  favIcon: ImageFilter
+}
+
+type GlobalConnectionEdges {
+  cursor: String!
+  node: Global
+}
+
+type GlobalConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [GlobalConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -273,12 +300,15 @@ type Mutation {
   createHeader(relativePath: String!, params: HeaderMutation!): Header!
   updateAbout(relativePath: String!, params: AboutMutation!): About!
   createAbout(relativePath: String!, params: AboutMutation!): About!
+  updateGlobal(relativePath: String!, params: GlobalMutation!): Global!
+  createGlobal(relativePath: String!, params: GlobalMutation!): Global!
 }
 
 input DocumentUpdateMutation {
   article: ArticleMutation
   header: HeaderMutation
   about: AboutMutation
+  global: GlobalMutation
   relativePath: String
 }
 
@@ -286,6 +316,7 @@ input DocumentMutation {
   article: ArticleMutation
   header: HeaderMutation
   about: AboutMutation
+  global: GlobalMutation
 }
 
 input ArticleBlocksRichTextMutation {
@@ -340,6 +371,11 @@ input AboutBlocksMutation {
 
 input AboutMutation {
   blocks: [AboutBlocksMutation]
+}
+
+input GlobalMutation {
+  siteName: String
+  favIcon: String
 }
 
 schema {

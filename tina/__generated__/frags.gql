@@ -37,3 +37,8 @@ fragment AboutParts on About {
     }
   }
 }
+
+fragment GlobalParts on Global {
+  siteName
+  favIcon
+}

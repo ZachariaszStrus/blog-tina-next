@@ -12,5 +12,6 @@
       "children": "ignore",
       "propElementValues": "always"
     }]
-  }
+  },
+  "ignorePatterns": ["**/tina/__generated__/**"]
 }

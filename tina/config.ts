@@ -1,57 +1,57 @@
-import {Collection, defineConfig} from "tinacms";
-import type { Template } from 'tinacms'
+import { Collection, defineConfig } from "tinacms";
+import type { Template } from "tinacms";
 
 const richTextBlock: Template = {
-  name: 'richText',
-  label: 'Rich text',
+  name: "richText",
+  label: "Rich text",
   fields: [
     {
-      type: 'rich-text',
-      label: 'Body',
-      name: 'body',
+      type: "rich-text",
+      label: "Body",
+      name: "body",
       required: true,
     },
   ],
-}
+};
 
 const mediaBlock: Template = {
-  name: 'media',
-  label: 'Media',
+  name: "media",
+  label: "Media",
   fields: [
     {
-      type: 'image',
-      label: 'File',
-      name: 'file',
+      type: "image",
+      label: "File",
+      name: "file",
       required: true,
     },
   ],
-}
+};
 
 const codeBlock: Template = {
-  name: 'code',
-  label: 'Code',
+  name: "code",
+  label: "Code",
   fields: [
     {
-      type: 'string',
-      label: 'Content',
-      name: 'content',
+      type: "string",
+      label: "Content",
+      name: "content",
       ui: {
-        component: 'textarea',
+        component: "textarea",
       },
     },
     {
-      type: 'string',
-      label: 'Language',
-      name: 'lang',
+      type: "string",
+      label: "Language",
+      name: "lang",
     },
   ],
-}
+};
 
 const article: Collection = {
   name: "article",
   label: "Articles",
   path: "content/articles",
-  format: 'json',
+  format: "json",
   fields: [
     {
       type: "string",
@@ -72,25 +72,25 @@ const article: Collection = {
       label: "Published at",
     },
     {
-      type: 'object',
+      type: "object",
       list: true,
-      name: 'blocks',
-      label: 'Blocks',
+      name: "blocks",
+      label: "Blocks",
       templates: [richTextBlock, mediaBlock, codeBlock],
     },
   ],
-}
+};
 
 const header: Collection = {
   name: "header",
   label: "Header",
   path: "content/header",
-  format: 'json',
+  format: "json",
   ui: {
     allowedActions: {
       delete: false,
       create: false,
-    }
+    },
   },
   fields: [
     {
@@ -106,29 +106,56 @@ const header: Collection = {
       required: true,
     },
   ],
-}
+};
 
 const about: Collection = {
   name: "about",
   label: "About",
   path: "content/about",
-  format: 'json',
+  format: "json",
   ui: {
     allowedActions: {
       delete: false,
       create: false,
-    }
+    },
   },
   fields: [
     {
-      type: 'object',
+      type: "object",
       list: true,
-      name: 'blocks',
-      label: 'Blocks',
+      name: "blocks",
+      label: "Blocks",
       templates: [richTextBlock, mediaBlock, codeBlock],
     },
   ],
-}
+};
+
+const global: Collection = {
+  name: "global",
+  label: "Global",
+  path: "content/global",
+  format: "json",
+  ui: {
+    allowedActions: {
+      delete: false,
+      create: false,
+    },
+  },
+  fields: [
+    {
+      type: "string",
+      name: "siteName",
+      label: "Site name",
+      required: true,
+    },
+    {
+      type: "image",
+      name: "favIcon",
+      label: "Fav icon",
+      required: true,
+    },
+  ],
+};
 
 // Your hosting provider likely exposes this as an environment variable
 const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "main";
@@ -148,10 +175,6 @@ export default defineConfig({
     },
   },
   schema: {
-    collections: [
-      article,
-      header,
-      about,
-    ],
+    collections: [article, header, about, global],
   },
 });

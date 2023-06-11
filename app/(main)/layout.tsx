@@ -1,29 +1,19 @@
 import { MainTemplate } from "@ui";
 import { client } from "@tinaGenerated";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
-export async function generateMetadata(
-  {},
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
-  // const response = await api.globalDetails();
-  // const global = response.global?.data?.attributes;
-  //
-  // return (
-  //   <>
-  //     <DefaultTags />
-  //     {global?.siteName && <title>{global.siteName}</title>}
-  //     {global?.favicon?.data?.attributes?.url && (
-  //       <link
-  //         rel="shortcut icon"
-  //         // @ts-ignore
-  //         precedence="default"
-  //         href={global.favicon?.data?.attributes?.url}
-  //       />
-  //     )}
-  //   </>
-  // );
-  return {};
+export async function generateMetadata(): Promise<Metadata> {
+  const { data } = await client.queries.global({
+    relativePath: `global.json`,
+  });
+  const global = data.global;
+
+  return {
+    title: global.siteName,
+    icons: {
+      icon: global.favIcon,
+    },
+  };
 }
 
 export default async function RootLayout({
