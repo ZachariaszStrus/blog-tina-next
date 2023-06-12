@@ -1,3 +1,8 @@
 {
-  "blocks": []
+  "blocks": [
+    {
+      "body": "### Hi, My name is Agnieszka.\n\nI am no expert but a learner, really fascinated by world of data and BI or just IT in general. Many times during my career I had to face issues which were not always easy to resolve by simply googling them. I often needed to customize and modify the tips, in order to meet the requirements. I am still learning and I am always open for discussion and exploring new better/ more efficient solutions. I dedicate my blog to topics with which I have struggled.!\n\n![](/tina/about-dino.png)\n\nI am mainly interested in data analytics and BI, however topics related to the cloud administration and Python programming (which I am learning) often tempt me. In the future, it would be my dream to work with data related to my academic background (science-geology) or my big passion which is astrophysics. I have an engineering background that provided me with solid foundations in math, science and logical thinking.\n\nIn private I love surfing, windsurfing, sailing, climbing, learning languages and music.\n",
+      "_template": "richText"
+    }
+  ]
 }
