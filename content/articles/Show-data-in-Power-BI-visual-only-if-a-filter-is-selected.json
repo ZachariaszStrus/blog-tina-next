@@ -4,7 +4,7 @@
   "publishedAt": "2023-01-31T23:00:00.000Z",
   "blocks": [
     {
-      "body": "As a warm-up for this blog let’s start with a quick trick in PowerBI. I think it is one of the most useful solutions regarding the visualization part of creating user-friendly reports.\n\n\\*\\*The requirement:\\*\\* I want a visualization to show data only if something is selected from the table/slicer above it (in this case row). I would say this will be like a drop-down/drill-through to details but on our terms. In today’s case, I do not want to play with hiding this visualization if nothing is selected totally. It will be marked with a title and e.g. column names but with no data reflected. The details will only be shown if we choose a row from the main table or a single slicer. In other words, we use the interaction between visualizations but also limit unnecessary information if nothing is filtered.\n\nTo achieve it we need to study two cases.\n\n\\### First\n\nCreate a measure:\n",
+      "body": "As a warm-up for this blog let’s start with a quick trick in PowerBI. I think it is one of the most useful solutions regarding the visualization part of creating user-friendly reports.\n\n**The requirement:** I want a visualization to show data only if something is selected from the table/slicer above it (in this case row). I would say this will be like a drop-down/drill-through to details but on our terms. In today’s case, I do not want to play with hiding this visualization if nothing is selected totally. It will be marked with a title and e.g. column names but with no data reflected. The details will only be shown if we choose a row from the main table or a single slicer. In other words, we use the interaction between visualizations but also limit unnecessary information if nothing is filtered.\n\nTo achieve it we need to study two cases.\n\n### First\n\nCreate a measure:\n",
       "_template": "richText"
     },
     {
@@ -23,6 +23,35 @@
     {
       "body": "This solution will be working only if data from the field you used in the measure occurs multiple times in the first visible visualization. If each category appears only once, we need to study the second case.\n",
       "_template": "richText"
+    },
+    {
+      "file": "/tina/Show-data-in-Power-BI-visual-only-if-a-filter-is-selected-image-2.png",
+      "_template": "media"
+    },
+    {
+      "file": "/tina/Show-data-in-Power-BI-visual-only-if-a-filter-is-selected-image-3.png",
+      "_template": "media"
+    },
+    {
+      "body": "### Second\n\nThis option works for almost all configurations, and also as a replacement for the first case.\n\n Create measure:\n",
+      "_template": "richText"
+    },
+    {
+      "content": "Check_If_Selected = \nVAR _check = CALCULATE(ISFILTERED('DataSet'[Manufacturer]),ALLSELECTED())\nRETURN\nIF(_check, 1, 0)\n",
+      "lang": "dax",
+      "_template": "code"
+    },
+    {
+      "body": "Then follow the instructions as in the previous point. The visual will be hidden only if nothing is selected in the main table/slicer.\n\n### Done!\n",
+      "_template": "richText"
+    },
+    {
+      "file": "/tina/Show-data-in-Power-BI-visual-only-if-a-filter-is-selected-image-4.png",
+      "_template": "media"
+    },
+    {
+      "file": "/tina/Show-data-in-Power-BI-visual-only-if-a-filter-is-selected-image-5.png",
+      "_template": "media"
     }
   ]
 }
